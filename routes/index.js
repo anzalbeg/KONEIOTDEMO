@@ -19,11 +19,22 @@ router.get('/', function(req, res, next) {
 router.get('/equipment/search', function(req, res, next) {
   var limitvalue = req.query.limit;
     console.log('limitvalue id ---'+limitvalue);
-    var find_equipment_json = {
-      limit: limitvalue,
-      include_docs: true 
+    let find_equipment_json1 = {
+      "selector": {
+      "ts": {
+         "$gt": 0
+      }
+   },
+      "fields": [
+                "equipment_no",
+                "address",
+                "contract_start_date",
+                "contract_end_date",
+                "status"
+            ],
+      "limit": parseInt(limitvalue)
     }
-    database.equipmentDB.list(find_equipment_json).then((result) => {
+    database.equipmentDB.find(find_equipment_json1).then((result) => {
       console.log(' top '+limitvalue+'equipment found --'+JSON.stringify(result));
       res.send(result);
     }).catch((err) => {
@@ -34,23 +45,29 @@ router.get('/equipment/search', function(req, res, next) {
 
 router.get('/equipment/:equipment_id', function(req, res, next) {
     console.log('equiment id ---'+req.params.equipment_id);
-    var find_equipment_json = {
+    let find_equipment_json2 = {
       selector: {
           equipment_no: req.params.equipment_id
+      },
+      sort :[{
+          equipment_no : "desc"
+      },{
+          ts:"desc"
       }
+      ]
     }
-        // var equipment_no_name = {name:'equipment_no', type:'json', index:{fields:['equipment_no']}}
-        // database.equipmentDB.index(equipment_no_name, function(er, response) {
-        //   if (er) {
-        //     throw er;
-        //   }
-       //   console.log('Index creation result: %s', response.result);
-           database.equipmentDB.find(find_equipment_json).then((result) => {
+         //var equipment_no_name = {name:'equipment_no', type:'json', index:{fields:['equipment_no','ts']}}
+         //database.equipmentDB.index(equipment_no_name, function(er, response) {
+          //if (er) {
+           //  throw er;
+          //}
+         //console.log('Index creation result: %s', response.result);
+           database.equipmentDB.find(find_equipment_json2).then((result) => {
             console.log('equipment_no found--'+JSON.stringify(result));
             res.send(result);
           }).catch((err) => {
             res.send(err);
-       // });
+       //});
         });
          
 });
