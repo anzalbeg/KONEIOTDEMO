@@ -1,0 +1,183 @@
+<html>
+
+<head>
+    <title>KONE</title>
+    <link href="../stylesheets/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Equipment Already Exists</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Equipment Successfully Created</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal3" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Equipment Doest Not Exists</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3>KONE IoT Assessment</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs col-md-12">
+                            <li class="active col-md-4">
+                                <a href="#tab_default_1" data-toggle="tab">
+                            List Equipments</a>
+                            </li>
+                            <li class="col-md-4">
+                                <a href="#tab_default_2" data-toggle="tab">
+                            Search Equipment </a>
+                            </li>
+                            <li class="col-md-4">
+                                <a href="#tab_default_3" data-toggle="tab">
+                            Create Equipment</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_default_1">
+                                <br> <br> <br> <br>
+                                <input class="form-control" type="text" placeholder="Here you can search X number of equipments. This GET Call is working behind the implementation <https://koneiotdemo.mybluemix.net/equipment/search/?limit={X}>" readonly>
+                                <br> <br>
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input data-validation="required number" class="form-control" placeholder="Enter No of Equipments" id="equipment_number">
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button class="btn btn-success" id="getEquiments" value="submit">Submit</button>
+                                </form>
+                                <br> <br>
+                                <p>
+                                    Gell all Equipments
+                                </p>
+                                <p>
+                                    <div class="bs-example">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.N</th>
+                                                    <th>Equipment Number</th>
+                                                    <th>Address</th>
+                                                    <th>Contract Start Date</th>
+                                                    <th>Contract End Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="equipments_data_table">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </p>
+                            </div>
+
+                            <div class="tab-pane" id="tab_default_2">
+                                <br> <br> <br> <br>
+                                <input class="form-control" type="text" placeholder="Here you can search perticular equipment details Just enter equipment_Id.  This GET API is working behind the logic <https://koneiotdemo.mybluemix.net/equipment/{Equipment_Id}>" readonly>
+                                <br> <br>
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input data-validation="alphanumeric" class="form-control" placeholder="Enter Equipment ID" title="Example - equ_01, equ_02" id="equipment_id">
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button class="btn btn-success" id="searchEquiment" value="submit">Submit</button>
+                                </form>
+                                <br> <br>
+                                <p>
+                                    Gell all Equipments
+                                </p>
+                                <p>
+                                    <div class="bs-example">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.N</th>
+                                                    <th>Equipment Number</th>
+                                                    <th>Address</th>
+                                                    <th>Contract Start Date</th>
+                                                    <th>Contract End Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="equipments_search_table">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </p>
+                            </div>
+                            <div class="tab-pane" id="tab_default_3">
+                                <br> <br> <br> <br>
+                                <input class="form-control" type="text" placeholder="Here you can create a new equipment. Just enter equipment details below.    This POST REST API is working behind the logic <https://koneiotdemo.mybluemix.net/equipment>" readonly>
+                                <br> <br>
+                                <form>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <input type="text" data-validation="required length" data-validation-length="5-12" data-validation-error-msg="Equipment No (5-12 chars) long" class="form-control" id="number" placeholder="Enter Equipment Number (equ01 , equ02..)">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <input type="text" data-validation="length" data-validation-length="3-12" data-validation-error-msg="Equipment Status (5-12 chars) long" class="form-control" id="status" placeholder="Equipment Status">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <input type="text" data-validation="length" data-validation-length="10-50" data-validation-error-msg="Equipment Address minimum 12 chars long" class="form-control" id="address" placeholder="Address">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <input type="text" data-validation="birthdate" data-validation-help="yyyy-mm-dd" class="form-control" id="c_s_d" placeholder="Contract Start Date">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <input type="text" data-validation="birthdate" data-validation-help="yyyy-mm-dd" class="form-control" id="c_e_d" placeholder="Contract End Date">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-success" id="createEquipment" value="submit">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<h3>KO12N</h3>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script src="../javascripts/getequipments.js"></script>
+    <script src="../javascripts/searchequipments.js"></script>
+    <script src="../javascripts/createequipments.js"></script>
+    <script>
+    </script>
+</body>
+
+</html>
